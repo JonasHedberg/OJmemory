@@ -4,13 +4,12 @@ Den här webbplatsen är byggd för att täcka de webbadresser och policytexter 
 
 ## 1. Måste fyllas i före publicering
 
-Sök efter följande tre platshållare i hela `docs`-mappen och ersätt dem:
+- Juridiskt/ansvarigt namn är satt till **Jonas Hedberg**.
+- Ersätt `{{GITHUB_ISSUES_URL}}` med repositoryts riktiga GitHub Issues-URL.
+- Öppna den publicerade `support.html` och kontrollera att knappen **Öppna GitHub Issues** går till rätt repository.
+- Använd den publicerade `support.html` som **Support URL** i App Store Connect.
 
-- `{{LEGAL_NAME}}` – ditt riktiga namn eller juridiska företagsnamn.
-- `{{SUPPORT_EMAIL}}` – en fungerande supportmejl som du faktiskt läser.
-- `{{LEGAL_ADDRESS}}` – juridisk/postadress om den behövs enligt lokal lag, DSA-status eller din distributionssituation. Om den inte ska visas på supportsidan kan du ersätta texten med exempelvis `Ej tillämpligt`, men kontrollera dina juridiska krav.
-
-Apple kräver att Support URL leder till faktisk kontaktinformation. Publicera därför **inte** supportsidan med platshållarna kvar.
+Ingen supportmejl eller fysisk supportadress finns på webbplatsen; support och felrapporter hanteras via GitHub Issues.
 
 ## 2. Publicera på GitHub Pages
 

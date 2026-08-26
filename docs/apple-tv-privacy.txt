@@ -14,6 +14,7 @@ OJ Memory skickar inte namn, e-postadress, plats, bilder, ljud, kontakter, annon
 Appen innehåller inga tredjeparts-SDK:er för annonsering, analys eller spårning i den aktuella versionen.
 
 Kontakt:
-Person/organisation: {{LEGAL_NAME}}
-E-post: {{SUPPORT_EMAIL}}
-Juridisk adress (om tillämpligt): {{LEGAL_ADDRESS}}
+
+Ansvarig: Jonas Hedberg
+Support och integritetsfrågor: {{GITHUB_ISSUES_URL}}
+GitHub Issues är offentliga. Publicera inte personuppgifter eller känslig information.

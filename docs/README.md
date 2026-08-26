@@ -4,21 +4,23 @@ Färdig statisk webbplats för OJ Memory med:
 
 - startsida / Marketing URL,
 - integritetspolicy / Privacy Policy URL,
-- support och faktisk kontaktplats / Support URL,
+- support via GitHub Issues / Support URL,
 - integritetsval / Privacy Choices URL (valfri),
 - tillgänglighetssida / Accessibility URL (valfri),
 - tvOS/Apple TV privacy policy-text att klistra in i App Store Connect,
 - App Store Connect-checklista.
 
+## Ansvarig
+
+**Jonas Hedberg**
+
 ## Viktigt före publicering
 
-Öppna `APP_STORE_CONNECT_CHECKLIST.md` och ersätt:
+Ersätt `{{GITHUB_ISSUES_URL}}` i hela `docs`-mappen med repositoryts riktiga GitHub Issues-URL, till exempel:
 
-- `{{LEGAL_NAME}}`
-- `{{SUPPORT_EMAIL}}`
-- `{{LEGAL_ADDRESS}}`
+`https://github.com/DITT_ANVANDARNAMN/DITT_REPO/issues`
 
-Apple kräver riktig kontaktinformation på supportwebbplatsen. Platshållarna finns därför med avsikt och ska inte publiceras oförändrade.
+Ingen supportmejl eller supportadress används på webbplatsen. Support och felrapporter hanteras via GitHub Issues.
 
 ## GitHub Pages
 
