@@ -1,96 +1,110 @@
-# OJ Memory – App Store Connect-checklista
+# OJ Memory – App Store Connect / App Review checklista
 
-Den här webbplatsen är byggd för att täcka de webbadresser och policytexter som normalt behövs för OJ Memory. Kontrollera alltid Apples aktuella formulär när du skickar in en ny version.
+Verifierad mot källkoden i ZIP-paketet och Apples publika dokumentation den **30 augusti 2026**.
 
-## 1. Måste fyllas i före publicering
+## 1. Webbplatser och publika URL:er
 
-- Juridiskt/ansvarigt namn är satt till **Jonas Hedberg**.
-- Ersätt `{{GITHUB_ISSUES_URL}}` med repositoryts riktiga GitHub Issues-URL.
-- Öppna den publicerade `support.html` och kontrollera att knappen **Öppna GitHub Issues** går till rätt repository.
-- Använd den publicerade `support.html` som **Support URL** i App Store Connect.
+### Krävs
 
-Ingen supportmejl eller fysisk supportadress finns på webbplatsen; support och felrapporter hanteras via GitHub Issues.
+- [x] **Privacy Policy URL** – `.../sv/privacy/`
+- [x] **Support URL** – `.../sv/support/`
 
-## 2. Publicera på GitHub Pages
+### Valfritt men förberett
 
-1. Lägg mappen `docs` i roten av GitHub-repot.
-2. GitHub → **Settings** → **Pages**.
-3. Under **Build and deployment**, välj **Deploy from a branch**.
-4. Välj branch `main` och mappen `/docs`.
-5. Spara och vänta tills GitHub visar den publicerade URL:en.
+- [x] Marketing URL – `.../sv/`
+- [x] User Privacy Choices URL – `.../sv/privacy-choices/`
+- [x] Accessibility URL – `.../sv/accessibility/`
 
-Om repot exempelvis heter `oj-memory` och användarnamnet är `example`, blir basadressen normalt:
+## 2. App Privacy – svar som matchar den granskade koden
 
-`https://example.github.io/oj-memory/`
+Den granskade appen gör inga nätverksanrop och har inga externa SDK-beroenden. `ScoreStore` lagrar endast lokala spelresultat via `UserDefaults`.
 
-Alla interna länkar på webbplatsen är relativa och fungerar därför även på project pages.
+Rekommenderat App Privacy-svar för nuvarande kod:
 
-## 3. Webbadresser i App Store Connect
+- **Data Collection:** Data Not Collected / inga data samlas in
+- **Tracking:** Nej
+- **Third-party advertising:** Nej
+- **Third-party analytics:** Nej
+- **Accounts:** Inga
 
-Byt `<BASE>` mot den publicerade GitHub Pages-adressen.
+Lokalt behandlade spelresultat (antal kort, gissningar, tid, poäng, datum) behöver inte deklareras som "collected" i App Store privacy label så länge de inte skickas från enheten.
 
-- **Marketing URL** (valfri): `<BASE>/`
-- **Support URL** (obligatorisk per appversion): `<BASE>/support.html`
-- **Privacy Policy URL** (obligatorisk): `<BASE>/privacy.html`
-- **User Privacy Choices URL** (valfri): `<BASE>/privacy-choices.html`
-- **Accessibility URL** (valfri): `<BASE>/accessibility.html`
+## 3. KRITISKT: Privacy Manifest finns men verkar inte bundlas
 
-## 4. App Privacy / Privacy Nutrition Label
+Filen `OJMemoryMachines/PrivacyInfo.xcprivacy` finns och innehåller:
 
-Kodgranskningen av det aktuella OJ Memory-projektet visar:
+- `NSPrivacyAccessedAPICategoryUserDefaults`
+- reason `CA92.1`
+- inga insamlade datatyper
+- tracking = false
 
-- inga nätverksanrop i spelkoden,
-- inga tredjeparts-SDK:er för analys/annonsering,
-- ingen App Tracking Transparency/AdSupport,
-- lokal topplista via `UserDefaults`.
+Detta matchar appens användning av `UserDefaults`. Men filen förekommer **inte** i `OJMemory.xcodeproj/project.pbxproj` som file reference eller resource för iOS-targeten. Med projektets vanliga `PBXGroup`-struktur innebär det att manifestet sannolikt inte följer med app-bundlen.
 
-Apple definierar “collect” som att data skickas från enheten på ett sätt där utvecklaren/tredje part kan komma åt den längre än vad som krävs för en realtidsbegäran. Data som endast behandlas lokalt på enheten räknas inte som insamlad för Privacy Nutrition Label.
+### Åtgärd i Xcode före upload
 
-**För den granskade versionen bör App Privacy därför vara “Data Not Collected”**, förutsatt att du inte lägger till nätverk, loggning, analys, crash reporting, annonser, serverfunktioner eller tredjeparts-SDK:er innan uppladdning.
+1. Lägg `PrivacyInfo.xcprivacy` i projektet om den inte syns i Project Navigator.
+2. Markera filen och slå på **Target Membership** för `OJMemory`.
+3. Kontrollera Build Phases / Copy Bundle Resources eller den resulterande archive-bundlen så att `PrivacyInfo.xcprivacy` finns med.
+4. Skapa ett nytt Archive och kontrollera Privacy Report / upload-validering.
 
-## 5. Apple TV / tvOS
+## 4. Kids Category
 
-App Store Connect kräver privacy policy **text** för tvOS. Kopiera innehållet i:
-
-`apple-tv-privacy.txt`
-
-och klistra in i fältet **Apple TV Privacy Policy**.
-
-## 6. Kids Category
-
-OJ Memory är avsett för 2–5 år. Om du väljer Kids Category ska åldersbandet **5 and under** användas.
+Appens kod och metadata anger uttryckligen målgruppen **barn 2–5 år**. Om beskrivningen ska behållas bör appen positioneras för **Kids Category, 5 and under**.
 
 För Kids Category gäller bland annat:
 
-- inga externa länkar, köp eller andra vuxenfunktioner direkt tillgängliga för barn utan parental gate,
-- ingen tredjepartsannonsering eller tredjepartsanalys i normalfallet,
-- ingen överföring av personligt identifierbar information eller enhetsinformation till tredje part.
+- externa länkar, köp eller liknande distraktioner i appen måste ligga bakom parental gate;
+- appen bör inte använda tredjepartsanalys eller tredjepartsannonsering;
+- personlig information/enhetsinformation får inte skickas till tredje part på otillåtet sätt.
 
-Apple kräver dessutom att alla appar har integritetspolicyn lätt tillgänglig **inne i appen**. För en Kids Category-app bör länken därför ligga i en vuxendel bakom en parental gate så att kravet på integritetspolicy kan uppfyllas utan att ge barnet en fri extern länk.
+Den granskade appen har inga externa URL-länkar i release-koden. Integritetspolicyn öppnas som en intern SwiftUI-vy, vilket undviker en extern link-out. Om supportwebbplatsen senare länkas direkt från appen ska den länken placeras bakom parental gate om appen ligger i Kids Category.
 
-## 7. DSA i EU
+## 5. Support via GitHub Issues
 
-App Store Connect frågar om Digital Services Act (DSA) trader status för EU-distribution. Om du är trader kan Apple kräva identifierings- och kontaktuppgifter som visas på App Store-produktsidan. Detta är ett konto-/distributionsval och kan inte avgöras av webbplatsmallen.
+Den publika supportwebbplatsen använder GitHub Issues som enda användarkontakt enligt önskemålet. Sidan varnar tydligt för att Issues är offentliga och att personuppgifter inte ska publiceras.
 
-## 8. Uppdatera policyn om appen ändras
+**Viktigt:** Apples App Store Connect-dokumentation säger att Support URL ska leda till faktisk kontaktinformation, inklusive sådan adress/e-post/telefon som kan krävas enligt lokal lag. GitHub Issues kan fungera som supportflöde, men en Issues-only-lösning kan inte garanteras uppfylla varje lokal rättslig kontaktregel.
 
-Gör en ny kontroll om du senare lägger till exempelvis:
+Dessutom går följande Apple-krav inte att ersätta med GitHub Issues:
 
-- Firebase, Crashlytics, Sentry eller annan diagnostik,
-- annonser,
-- analys,
-- nätverksanrop/server,
-- inloggning,
-- iCloud/CloudKit,
-- pushnotiser,
-- plats, kamera, mikrofon eller andra behörigheter.
+- **App Review Information** kräver privat kontaktperson med namn, e-post och telefonnummer i App Store Connect.
+- **EU Digital Services Act:** om utvecklaren är "trader" kräver Apple verifierad adress, telefonnummer och e-post och visar dessa på App Store-produkt­sidan. Om utvecklaren inte är trader ska status ändå deklareras.
 
-Då kan både integritetspolicyn och App Privacy-svaren behöva ändras.
+## 6. Deployment target – dokumentationsavvikelse
 
-## Apple-källor
+`README.md` och `VALIDATION.md` säger iOS 17.0+, men app-targetens aktuella build settings i `project.pbxproj` anger **iOS 26.0** (testtargeten/Swift Package anger fortfarande 17.0).
 
-- App Store Connect – Manage app privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy/
-- App Store Connect – Platform version information: https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information/
-- App Privacy Details: https://developer.apple.com/app-store/app-privacy-details/
+Det är inte i sig ett App Review-fel, men det påverkar vilka enheter som kan installera appen och bör vara ett medvetet val. Synkronisera dokumentationen eller deployment target innan release.
+
+## 7. Appens inbyggda integritetspolicy
+
+Källkoden har en lättåtkomlig Inställningar → Integritetspolicy-vy. Texten beskriver:
+
+- lokal topplista,
+- inga personuppgifter,
+- barns integritet,
+- lagring/radering,
+- ingen analys/reklam/spårning,
+- tredje parter,
+- ändringar och kontakt.
+
+Det ligger väl i linje med Apples krav på att policyn ska beskriva insamling/användning, tredjepartsdelning samt retention/radering. Håll webbpolicyn och den inbyggda texten materiellt synkroniserade vid framtida uppdateringar.
+
+## 8. App Review Information – rekommenderad Notes-text
+
+> OJ Memory is an offline memory matching game designed for children ages 2–5. The app has no account system, no advertising, no in-app purchases, no third-party analytics, and no tracking. Game results (card count, guesses, duration, score, date) are stored only on-device for local high-score lists. No login is required. The privacy policy is available from Settings inside the app.
+
+App Review contact name, email and phone number måste fyllas i separat i App Store Connect.
+
+## 9. Officiella Apple-källor
+
 - App Review Guidelines: https://developer.apple.com/app-store/review/guidelines/
+- Manage App Privacy: https://developer.apple.com/help/app-store-connect/manage-app-information/manage-app-privacy
+- App Privacy reference: https://developer.apple.com/help/app-store-connect/reference/app-information/app-privacy
+- Platform version information / Support URL: https://developer.apple.com/help/app-store-connect/reference/app-information/platform-version-information
+- App Privacy Details: https://developer.apple.com/app-store/app-privacy-details/
+- Required reason APIs: https://developer.apple.com/documentation/bundleresources/describing-use-of-required-reason-api
+- UserDefaults reason `CA92.1`: https://developer.apple.com/documentation/bundleresources/app-privacy-configuration/nsprivacyaccessedapitypes/nsprivacyaccessedapitypereasons
 - Kids: https://developer.apple.com/kids/
+- DSA trader requirements: https://developer.apple.com/help/app-store-connect/manage-compliance-information/manage-european-union-digital-services-act-trader-requirements/
+- Accessibility Nutrition Labels: https://developer.apple.com/help/app-store-connect/manage-app-accessibility/overview-of-accessibility-nutrition-labels

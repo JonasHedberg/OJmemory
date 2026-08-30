@@ -1,27 +1,34 @@
 # OJ Memory – GitHub Pages (`docs`)
 
-Färdig statisk webbplats för OJ Memory med:
+Den här mappen är en färdig statisk GitHub Pages-webbplats för OJ Memory. Den har inga externa JavaScript-bibliotek, inga externa typsnitt, ingen egen analytics och inga egna cookies.
 
-- startsida / Marketing URL,
-- integritetspolicy / Privacy Policy URL,
-- support via GitHub Issues / Support URL,
-- integritetsval / Privacy Choices URL (valfri),
-- tillgänglighetssida / Accessibility URL (valfri),
-- tvOS/Apple TV privacy policy-text att klistra in i App Store Connect,
-- App Store Connect-checklista.
+## Publicera
 
-## Ansvarig
+1. Lägg hela `docs/` i repositoryts standardbranch.
+2. GitHub → **Settings → Pages**.
+3. Välj **Deploy from a branch**.
+4. Välj aktuell branch och mappen **`/docs`**.
+5. Spara och vänta tills GitHub visar den publika Pages-adressen.
 
-**Jonas Hedberg**
+Webbplatsen är förberedd för repositories med namnet `OJmemory-Apple`. GitHub Issues-länkarna skapas automatiskt från `<github-användare>.github.io` + repositorynamnet. Om repositoryt byter namn eller om en egen domän används, sätt `repositoryUrl` i `assets/js/site.js`.
 
-## Viktigt före publicering
+## Språkstruktur
 
-Ersätt `{{GITHUB_ISSUES_URL}}` i hela `docs`-mappen med repositoryts riktiga GitHub Issues-URL, till exempel:
+- `/sv/` – Svenska (nuvarande språk)
+- framtida språk läggs som parallella mappar, exempelvis `/en/`
+- delade resurser ligger i `/assets/`
 
-`https://github.com/DITT_ANVANDARNAMN/DITT_REPO/issues`
+När ett nytt språk läggs till bör navigering, `hreflang`, policytexter och App Store Connect-lokaliseringar uppdateras samtidigt.
 
-Ingen supportmejl eller supportadress används på webbplatsen. Support och felrapporter hanteras via GitHub Issues.
+## App Store Connect – URL:er efter publicering
 
-## GitHub Pages
+Byt `<PAGES-BASE>` mot den faktiska GitHub Pages-basadressen, exempelvis `https://anvandare.github.io/OJmemory-Apple`.
 
-Lägg denna `docs`-mapp i roten av repot och välj **Settings → Pages → Deploy from a branch → main → /docs**.
+- **Support URL (obligatorisk):** `<PAGES-BASE>/sv/support/`
+- **Privacy Policy URL (obligatorisk för iOS):** `<PAGES-BASE>/sv/privacy/`
+- **Marketing URL (valfri):** `<PAGES-BASE>/sv/`
+- **User Privacy Choices URL (valfri):** `<PAGES-BASE>/sv/privacy-choices/`
+- **Accessibility URL (valfri):** `<PAGES-BASE>/sv/accessibility/`
+
+
+Se `APP_STORE_CONNECT_CHECKLIST.md` för granskningen av ZIP-filen och kvarstående punkter.
