@@ -14,11 +14,9 @@ Webbplatsen är förberedd för repositories med namnet `OJmemory-Apple`. GitHub
 
 ## Språkstruktur
 
-- `/sv/` – Svenska (nuvarande språk)
-- framtida språk läggs som parallella mappar, exempelvis `/en/`
-- delade resurser ligger i `/assets/`
+Dokumentationen följer exakt språkstödet i Swift/Xcode-projektet: `sv`, `en`, `da`, `nb`, `fi`, `de`, `fr`, `es`, `pt`, `nl`, `it`. Svenska är utvecklingsspråk och rot-URL:en väljer bästa stödda webbspråk från webbläsarens språkpreferenser, med svenska som fallback. Varje språk har sidor för startsida, integritet, integritetsval, support, tillgänglighet och juridik.
 
-När ett nytt språk läggs till bör navigering, `hreflang`, policytexter och App Store Connect-lokaliseringar uppdateras samtidigt.
+Delade resurser ligger i `/assets/`. Bilder behåller proportionerna via explicit `height: auto`, `aspect-ratio` och `object-fit: contain`.
 
 ## App Store Connect – URL:er efter publicering
 

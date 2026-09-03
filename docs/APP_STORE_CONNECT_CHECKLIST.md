@@ -1,6 +1,6 @@
 # OJ Memory – App Store Connect / App Review checklista
 
-Verifierad mot källkoden i ZIP-paketet och Apples publika dokumentation den **30 augusti 2026**.
+Verifierad mot källkoden i ZIP-paketet och Apples publika dokumentation den **2 september 2026**.
 
 ## 1. Webbplatser och publika URL:er
 
@@ -29,7 +29,7 @@ Rekommenderat App Privacy-svar för nuvarande kod:
 
 Lokalt behandlade spelresultat (antal kort, gissningar, tid, poäng, datum) behöver inte deklareras som "collected" i App Store privacy label så länge de inte skickas från enheten.
 
-## 3. KRITISKT: Privacy Manifest finns men verkar inte bundlas
+## 3. Privacy Manifest
 
 Filen `OJMemoryMachines/PrivacyInfo.xcprivacy` finns och innehåller:
 
@@ -38,18 +38,16 @@ Filen `OJMemoryMachines/PrivacyInfo.xcprivacy` finns och innehåller:
 - inga insamlade datatyper
 - tracking = false
 
-Detta matchar appens användning av `UserDefaults`. Men filen förekommer **inte** i `OJMemory.xcodeproj/project.pbxproj` som file reference eller resource för iOS-targeten. Med projektets vanliga `PBXGroup`-struktur innebär det att manifestet sannolikt inte följer med app-bundlen.
+Detta matchar appens användning av `UserDefaults`. Filen finns som file reference i `OJMemory.xcodeproj/project.pbxproj` och ingår i Copy Bundle Resources för både iOS/iPadOS- och tvOS-targeten.
 
-### Åtgärd i Xcode före upload
+### Kontroll i Xcode före upload
 
-1. Lägg `PrivacyInfo.xcprivacy` i projektet om den inte syns i Project Navigator.
-2. Markera filen och slå på **Target Membership** för `OJMemory`.
-3. Kontrollera Build Phases / Copy Bundle Resources eller den resulterande archive-bundlen så att `PrivacyInfo.xcprivacy` finns med.
-4. Skapa ett nytt Archive och kontrollera Privacy Report / upload-validering.
+1. Kontrollera Build Phases / Copy Bundle Resources eller den resulterande archive-bundlen så att `PrivacyInfo.xcprivacy` finns med i båda apparna.
+2. Skapa ett nytt Archive och kontrollera Privacy Report / upload-validering.
 
 ## 4. Kids Category
 
-Appens kod och metadata anger uttryckligen målgruppen **barn 2–5 år**. Om beskrivningen ska behållas bör appen positioneras för **Kids Category, 5 and under**.
+Appens kod och metadata anger uttryckligen målgruppen **barn 3–9 år**. Kontrollera vald åldersgrupp och Kids Category-konfiguration i App Store Connect mot den uppdaterade målgruppen före inskickning.
 
 För Kids Category gäller bland annat:
 
@@ -92,7 +90,7 @@ Det ligger väl i linje med Apples krav på att policyn ska beskriva insamling/a
 
 ## 8. App Review Information – rekommenderad Notes-text
 
-> OJ Memory is an offline memory matching game designed for children ages 2–5. The app has no account system, no advertising, no in-app purchases, no third-party analytics, and no tracking. Game results (card count, guesses, duration, score, date) are stored only on-device for local high-score lists. No login is required. The privacy policy is available from Settings inside the app.
+> OJ Memory is an offline memory matching game with six selectable picture categories, designed for children ages 3–9. The app has no account system, no advertising, no in-app purchases, no third-party analytics, and no tracking. Game results (card count, guesses, duration, score, date) are stored only on-device for local high-score lists. No login is required. The privacy policy is available from Settings inside the app.
 
 App Review contact name, email and phone number måste fyllas i separat i App Store Connect.
 
